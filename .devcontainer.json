@@ -1,0 +1,45 @@
+{
+  "name": "openstix",
+  "remoteUser": "vscode",
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04",
+  "workspaceFolder": "/openstix",
+  "workspaceMount": "source=${localWorkspaceFolder}/,target=/openstix/,type=bind,consistency=cached",
+  "features": {
+    "ghcr.io/devcontainers/features/git": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/hatch:2": {
+      "version": "latest"
+    }
+  },
+  "postCreateCommand": "/usr/bin/bash -i -c 'sudo apt-get update && hatch run true'",
+  "postAttachCommand": "/usr/bin/bash -i -c 'source /openstix/.venv/default/bin/activate'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "files.eol": "\n",
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "ruff.lint.args": [
+          "--config=/openstix/pyproject.toml"
+        ],
+        "ruff.format.args": [
+          "--config=/openstix/pyproject.toml"
+        ],
+        "python.defaultInterpreterPath": "/openstix/.venv/default/bin/python",
+        "python.analysis.autoImportCompletions": true,
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll": true,
+            "source.organizeImports.ruff": true
+          }
+        }
+      }
+    }
+  }
+}
