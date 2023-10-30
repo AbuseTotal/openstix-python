@@ -8,13 +8,13 @@
     "ghcr.io/devcontainers/features/git": {
       "version": "latest"
     },
-    "ghcr.io/devcontainers-contrib/features/poetry": {
+    "ghcr.io/devcontainers-contrib/features/hatch:2": {
       "version": "latest"
     }
   },
   "customizations": {
     "vscode": {
-      "postCreateCommand": "sudo apt-get update ; poetry config virtualenvs.in-project true",
+      "postCreateCommand": "sudo apt-get update",
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",

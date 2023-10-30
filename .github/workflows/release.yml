@@ -6,15 +6,9 @@ on:
       - "v*"
 
 jobs:
-  build-and-publish:
+  build:
+    name: Build release
     runs-on: ubuntu-latest
-    environment:
-      name: releases
-      url: https://pypi.org/project/openstix
-
-    permissions:
-      id-token: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,12 +18,34 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Install Hatch
+        run: pip install -U hatch
 
-      - name: Build package
-        run: |
-          poetry build
+      - name: Build
+        run: hatch -v build
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: dist
+          if-no-files-found: error
+
+  publish:
+    name: Publish release
+    runs-on: ubuntu-latest
+    needs:
+    - build
+    environment:
+      name: releases
+      url: https://pypi.org/project/openstix
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: package
+          path: dist
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.10
