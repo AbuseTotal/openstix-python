@@ -21,50 +21,63 @@ pip install openstix
 
 Import the necessary modules and get started with creating and managing STIX objects within your defined workspace.
 
+### Start workspace
 ```python
-# Create a new workspace with your organization's namespace
 from openstix.toolkit.workspace import Workspace
 
+# Create a new workspace with your organization's namespace
 workspace = Workspace(namespace="<your-namespace-uuid>")
+```
 
-
-# Add STIX observable object (SCO)
+### Create SCO within workspace
+```python
 from openstix.objects import DomainName
 
+# Add STIX observable object (SCO)
 domain = self.workspace.create(Domain, value="abusetotal.com")
+```
 
-
+### Remove object from workspace
+```python
 # Remove STIX observable object (SCO)
 self.workspace.remove(domain.id)
+```
 
-
-# Add STIX domain object (SDO)
+### Create SDO within workspace
+```python
 from openstix.objects import Malware
 
+# Add STIX domain object (SDO)
 self.workspace.create(Malware, name="Malicious", is_family=False)
+```
 
-
-# Filter objects using presets
+### Filter workspace objects using presets filters
+```python
 from openstix.toolkit.filters.presets import MALWARE_FILTER
 
+# Filter objects using presets
 malwares = self.workspace.query(MALWARE_FILTER)
+```
 
-
-# Use Attack Pattern objects from MITRE Dataset
+### Get MITRE TTP using MITRE Datasets
+```python
 from openstix.datasets import MITREDataset
 
 dataset = MITREDataset()
 dataset.load()
 
+# Use Attack Pattern objects from MITRE Dataset
 attack_pattern = dataset.attack_pattern("T1090")
+```
 
-
-# Use Location objects from GeoLocation Dataset
+### Get country and regions objects using GeoLocation Datasets
+```python
 from openstix.datasets import GeoLocationsDataset
 
 dataset = GeoLocationsDataset()
 dataset.load()
 
+# Use Location objects from GeoLocation Dataset
 country = dataset.country("PT")
 region = dataset.region("Europe")
 ```
