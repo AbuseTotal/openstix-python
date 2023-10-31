@@ -12,62 +12,33 @@
       "version": "latest"
     }
   },
+  "postCreateCommand": "/usr/bin/bash -i -c 'sudo apt-get update && hatch run true'",
+  "postAttachCommand": "/usr/bin/bash -i -c 'source /openstix/.venv/default/bin/activate'",
   "customizations": {
     "vscode": {
-      "postCreateCommand": "sudo apt-get update",
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-python.isort",
-        "ms-python.black-formatter",
-        "yzhang.markdown-all-in-one",
-        "DavidAnson.vscode-markdownlint",
-        "github.vscode-github-actions"
+        "charliermarsh.ruff"
       ],
       "settings": {
         "files.eol": "\n",
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": true,
-          "source.fixAll": true,
-          "source.removeUnusedImports": true
-        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "ruff.lint.args": [
+          "--config=/openstix/pyproject.toml"
+        ],
+        "ruff.format.args": [
+          "--config=/openstix/pyproject.toml"
+        ],
+        "python.defaultInterpreterPath": "/openstix/.venv/default/bin/python",
         "python.analysis.autoImportCompletions": true,
-        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-        "python.venvFolders": [
-          "${workspaceFolder}/.venv"
-        ],
-        "black-formatter.path": [
-          "${workspaceFolder}/.venv/bin/black",
-          "${workspaceFolder}/.venv/bin/black"
-        ],
-        "black-formatter.args": [
-          "--config",
-          "${workspaceFolder}/pyproject.toml"
-        ],
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
           "editor.formatOnSave": true,
+          "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.fixAll": true,
+            "source.organizeImports.ruff": true
           }
-        },
-        "isort.path": [
-          "${workspaceFolder}/.venv/bin/isort"
-        ],
-        "isort.args": [
-          "--settings-file",
-          "${workspaceFolder}/pyproject.toml"
-        ],
-        "flake8.args": [
-          "--config",
-          "${workspaceFolder}/pyproject.toml"
-        ],
-        "flake8.path": [
-          "${workspaceFolder}/.venv/bin/flake8p"
-        ],
-        "python.testing.pytestEnabled": true,
-        "python.testing.unittestEnabled": false,
-        "python.testing.pytestArgs": []
+        }
       }
     }
   }

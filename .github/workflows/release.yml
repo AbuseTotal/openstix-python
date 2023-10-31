@@ -1,19 +1,23 @@
-name: Release
+name: New Release
 
 on:
   push:
     tags:
-      - "v*"
+      - v*
+
+permissions: read-all
 
 jobs:
   build:
-    name: Build Release
+    name: Build release
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
@@ -21,7 +25,7 @@ jobs:
       - name: Install Hatch
         run: pip install -U hatch
 
-      - name: Build
+      - name: Build package
         run: hatch -v build
 
       - uses: actions/upload-artifact@v3
@@ -31,7 +35,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish Release in PyPi
+    name: Publish release
     runs-on: ubuntu-latest
     needs:
     - build
@@ -47,5 +51,5 @@ jobs:
           name: package
           path: dist
 
-      - name: Publish package distributions to PyPI
+      - name: Publish package distributions
         uses: pypa/gh-action-pypi-publish@v1.8.10
