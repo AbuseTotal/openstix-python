@@ -1,4 +1,3 @@
-from tracemalloc import start
 import uuid
 
 from stix2.canonicalization.Canonicalize import canonicalize
