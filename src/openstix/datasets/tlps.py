@@ -3,7 +3,7 @@ from stix2.v21.common import TLP_GREEN as _GREEN
 from stix2.v21.common import TLP_AMBER as _AMBER
 from stix2.v21.common import TLP_RED as _RED
 
-from ._base import Dataset
+from openstix.datasets._base import Dataset
 
 
 class TLPsDataset(Dataset):

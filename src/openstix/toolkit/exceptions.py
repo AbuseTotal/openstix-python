@@ -1,6 +1,6 @@
 from stix2.datastore import DataSourceError
 
-from .._base import _load_submodules
+from openstix._base import _load_submodules
 
 globals().update(_load_submodules("stix2.v21.observables", "errors"))
 globals().update(_load_submodules("stix2.v21.sdo", "errors"))

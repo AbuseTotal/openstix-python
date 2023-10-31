@@ -1,6 +1,7 @@
 import importlib
 import inspect
 
+
 IGNORE = {"NOW", "itertools", "OrderedDict", "STIXDeprecationWarning", "EXTENSION_TYPE"}
 WORKAROUND_NAMES = {"AlternateDataStream", "WindowsPESection", "EmailMIMEComponent"}
 

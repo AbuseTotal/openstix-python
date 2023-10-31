@@ -4,6 +4,7 @@ from stix2.canonicalization.Canonicalize import canonicalize
 from stix2.base import _make_json_serializable
 from stix2.environment import ObjectFactory
 
+
 __all__ = [
     "DeterministicObjectFactory",
     "ObjectFactory"

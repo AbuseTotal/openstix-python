@@ -1,8 +1,8 @@
-from ..toolkit.filters.presets import ATTACK_PATTERN_FILTER, INTRUSION_SET_FILTER
-from ..toolkit.custom import CustomObject
-from ..properties import StringProperty
-from ..toolkit.filters import Filter
-from ._base import Dataset
+from openstix.toolkit.filters.presets import ATTACK_PATTERN_FILTER, INTRUSION_SET_FILTER
+from openstix.toolkit.custom import CustomObject
+from openstix.properties import StringProperty
+from openstix.toolkit.filters import Filter
+from openstix.datasets._base import Dataset
 
 # Objects:
 # 'x-mitre-tactic'

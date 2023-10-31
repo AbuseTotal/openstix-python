@@ -1,7 +1,7 @@
 from stix2 import ObjectFactory as _ObjectFactory
 from stix2 import MemoryStore, Environment
 
-from .factory import DeterministicObjectFactory
+from openstix.toolkit.factory import DeterministicObjectFactory
 
 __all__ = [
     "Workspace",

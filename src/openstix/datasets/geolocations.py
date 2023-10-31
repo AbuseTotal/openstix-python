@@ -1,9 +1,9 @@
 from countryinfo import CountryInfo
 
-from ..toolkit.filters.presets import LOCATION_FILTER
-from ..objects import Relationship, Location
-from ..toolkit.filters import Filter
-from ._base import Dataset
+from openstix.toolkit.filters.presets import LOCATION_FILTER
+from openstix.objects import Relationship, Location
+from openstix.toolkit.filters import Filter
+from openstix.datasets._base import Dataset
 
 REGION_FILTER = Filter("x_location_type", "=", "region")
 SUBREGION_FILTER = Filter("x_location_type", "=", "sub-region")

@@ -1,4 +1,5 @@
-from ._base import _load_submodules, _map_types
+from openstix._base import _load_submodules, _map_types
+
 
 SCOS_MAPPING = _map_types(_load_submodules("stix2.v21.observables", "objects"))
 SCOS_EXTENSIONS_MAPPING = _map_types(_load_submodules("stix2.v21.observables", "extensions"))

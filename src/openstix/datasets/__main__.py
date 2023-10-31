@@ -1,8 +1,8 @@
 import click
 
-from .geolocations import GeoLocationsDataset
-from .mitre import MITREDataset
-from .tlps import TLPsDataset
+from openstix.datasets.geolocations import GeoLocationsDataset
+from openstix.datasets.mitre import MITREDataset
+from openstix.datasets.tlps import TLPsDataset
 
 datasets_classes = [
     GeoLocationsDataset,

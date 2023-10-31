@@ -1,7 +1,7 @@
 def _build_filters():
     from stix2.datastore.filters import Filter
 
-    from ...mappings import SROS_MAPPING, SDOS_MAPPING, SCOS_MAPPING
+    from openstix.mappings import SROS_MAPPING, SDOS_MAPPING, SCOS_MAPPING
 
     object_types = list(SROS_MAPPING.keys()) + list(SDOS_MAPPING.keys()) + list(SCOS_MAPPING.keys())
 

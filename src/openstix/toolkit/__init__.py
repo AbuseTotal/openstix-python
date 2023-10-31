@@ -1,4 +1,4 @@
 from stix2 import patterns
 
-from . import exceptions, sources, filters, stores, custom, sinks
-from ._base import ObjectFactory, Environment, Workspace
+from openstix.toolkit import exceptions, sources, filters, stores, custom, sinks
+from openstix.toolkit._base import ObjectFactory, Environment, Workspace
