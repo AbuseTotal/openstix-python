@@ -2,7 +2,7 @@
 
 OpenSTIX is an **unofficial STIX 2.1 library and toolkit** built upon the foundations of the [STIX2 library](https://github.com/oasis-open/cti-python-stix2/), aimed at enhancing the efficiency and productivity of cybersecurity professionals. It's developed and maintained by AbuseTotal, a startup committed to delivering high-quality software solutions in the cybersecurity domain.
 
-[![Release](https://github.com/AbuseTotal/openstix/actions/workflows/release.yml/badge.svg)](https://github.com/AbuseTotal/openstix/actions/workflows/release.yml)
+[![PyPI version](https://badge.fury.io/py/openstix.svg)](https://badge.fury.io/py/openstix)
 
 ## Features
 
