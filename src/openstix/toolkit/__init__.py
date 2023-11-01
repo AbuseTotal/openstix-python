@@ -1,4 +1,4 @@
-from stix2 import patterns
+from openstix.toolkit import custom, exceptions, filters, sinks, sources, stores
+from openstix.toolkit._base import Environment, ObjectFactory, Workspace
 
-from openstix.toolkit import exceptions, sources, filters, stores, custom, sinks
-from openstix.toolkit._base import ObjectFactory, Environment, Workspace
+__all__ = ["exceptions", "sources", "filters", "stores", "custom", "sinks", "ObjectFactory", "Environment", "Workspace"]
