@@ -59,9 +59,19 @@ packages = ["src/openstix"]
 type = "virtual"
 path = ".venv/default"
 
-[tool.hatch.envs.default.scripts]
-release = "tbd"
-run = "tbd"
+[tool.hatch.envs.docs]
+type = "virtual"
+path = ".venv/docs"
+dependencies = [
+    "mkdocs",
+    "mkdocstrings",
+    "mkdocs-material==9.4.7",
+    "mkdocs-git-authors-plugin",
+    "mkdocs-git-committers-plugin-2",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-glightbox",
+    "mike"
+]
 
 [tool.ruff]
 line-length = 120
