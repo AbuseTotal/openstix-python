@@ -1,7 +1,7 @@
-from stix2 import ObjectFactory as _ObjectFactory
 from stix2 import MemoryStore, Environment
-
 from openstix.toolkit.factory import DeterministicObjectFactory
+from typing import Any, Dict, List, Optional, Generator, Tuple, Union
+from stix2.environment import ObjectFactory
 
 __all__ = [
     "Workspace",
@@ -11,71 +11,47 @@ __all__ = [
 
 class Workspace(Environment):
     """
-    Workspace is an extension of stix2.Environment, providing additional
-    functionality such as querying unique STIX objects and removing STIX
-    objects along with all their versions from the store.
+    Extends the `stix2.Environment` class to provide a customized environment for handling
+    STIX objects in a workspace context. Offers functionality for creating, querying, and
+    removing STIX objects, including handling multiple versions of objects.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, namespace):
+        """
+        Initializes the Workspace with a MemoryStore and a DeterministicObjectFactory.
+
+        Args:
+            namespace (str): The namespace URI for generating deterministic STIX object IDs.
+        """
         store = MemoryStore()
-        factory = DeterministicObjectFactory(namespace=kwargs.pop("namespace"))
-        super().__init__(*args, store=store, factory=factory, **kwargs)
+        factory = DeterministicObjectFactory(namespace=namespace)
+        super().__init__(store=store, factory=factory)
 
-    def stats(self, *args, **kwargs):
-        stats = dict()
-        for obj in self.query(*args, **kwargs):
-            if obj.type in stats:
-                stats[obj.type] += 1
-            else:
-                stats[obj.type] = 1
-        return stats
+    def create(self, cls, **kwargs):
+        """
+        Overrides the `create` method of the `Environment` class to add new STIX objects
+        to the store immediately upon creation.
 
-    def create(self, *args, **kwargs):
-        obj = super().create(*args, **kwargs)
+        Args:
+            cls: the python-stix2 class of the object to be created (eg. Indicator)
+            **kwargs: The property/value pairs of the STIX object to be created
+
+        Returns:
+            stix2.base._STIXBase: The newly created STIX object.
+        """
+        obj = super().create(cls, **kwargs)
         self.add(obj)
         return obj
 
-    def query(self, *args, **kwargs):
-        """
-        Query STIX objects with an option to get the most recent version
-        of unique objects.
-
-        :param args: Positional arguments to be passed to the super's query method.
-        :param unique: A boolean flag to decide whether to return the most recent
-                       versions of unique objects. If True, it returns the most
-                       recent versions of unique objects, otherwise all objects.
-        :param kwargs: Keyword arguments to be passed to the super's query method.
-        :return: A list of STIX objects from the query result. If unique is True,
-                 the list will contain the most recent versions of unique objects,
-                 in the reverse order they were added.
-        """
-        unique = kwargs.pop("unique", True)
-
-        all_objects = super().query(*args, **kwargs)
-        if not unique or not all_objects:
-            return all_objects
-
-        # FIXME: use stix2.utils.deduplicate function???
-        def get_most_recent_unique_objects():
-            """
-            A generator that yields the most recent versions of unique objects,
-            processing them in the reverse order they were added to handle
-            newer versions being appended to the environment.
-            """
-            seen = set()
-            for obj in reversed(all_objects):
-                if obj.id in seen:
-                    continue
-                seen.add(obj.id)
-                yield obj
-
-        return list(reversed(list(get_most_recent_unique_objects())))
-
     def remove(self, object_id):
         """
-        Removes an object along with all its versions from the store.
+        Removes an object, along with all its versions, from the memory store.
 
-        :param object_id: The ID of the STIX object to be removed.
+        Args:
+            object_id (str): The ID of the STIX object to be removed.
+
+        Raises:
+            ValueError: If no object with the provided ID could be found.
         """
         try:
             for source in self.source.data_sources:
@@ -83,6 +59,52 @@ class Workspace(Environment):
         except KeyError:
             raise ValueError(f"No object found with ID: {object_id}")
 
+    def query(self, query, unique=True):
+        """
+        Executes a query against the memory store to retrieve STIX objects.
 
-class ObjectFactory(_ObjectFactory):
-    pass
+        Args:
+            query (Optional[List], optional): A list of filters representing the query. Defaults to None.
+            unique (bool, optional): When True, only the most recent version of each unique object
+                                     is returned. Defaults to True.
+
+        Returns:
+            List[stix2.base._STIXBase]: A list of STIX objects that match the query criteria. When `unique`
+                                        is True, the list will contain only the most recent version of each
+                                        unique object.
+        """
+        all_objects = super().query(query)
+        if not unique or not all_objects:
+            return all_objects
+
+        def get_most_recent_unique_objects():
+            """
+            Yields the most recent versions of unique objects, sorted in reverse order of addition.
+
+            Yields:
+                stix2.base._STIXBase: Each unique STIX object in the memory store.
+            """
+            seen = set()
+            for obj in reversed(all_objects):
+                if obj.id not in seen:
+                    seen.add(obj.id)
+                    yield obj
+
+        return list(get_most_recent_unique_objects())
+
+    def stats(self, query):
+        """
+        Generates statistics on the STIX objects within the store.
+
+        This function will count the number of occurrences for each type of STIX object.
+
+        Args:
+            query (Optional[List], optional): A list of filters representing the query. Defaults to None.
+
+        Returns:
+            Dict[str, int]: A dictionary with STIX object types as keys and their counts as values.
+        """
+        stats = dict()
+        for obj in self.query(query):
+            stats[obj.type] = stats.get(obj.type, 0) + 1
+        return stats

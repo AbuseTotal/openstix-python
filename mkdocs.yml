@@ -43,18 +43,31 @@ plugins:
       alias_type: symlink
       canonical_version: latest  
   - search
-  - git-committers:
-      repository: abusetotal/openstix
-      branch: master  
+  # - git-committers:
+  #     repository: abusetotal/openstix
+  #     branch: master  
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago
   - glightbox
+  - autorefs
   - mkdocstrings:
       default_handler: python
       handlers:
         python:
-          paths: [src/]
+          paths:
+            - src
+          options:
+            # Headings
+            show_root_heading: true
+            show_root_full_path: false
+            # Docstrings
+            show_if_no_docstring: true
+            # Signatures/annotations
+            show_signature_annotations: true
+            # Other
+            show_bases: false
+            show_source: false
 
 markdown_extensions: 
   - attr_list
@@ -120,5 +133,6 @@ nav:
       - Similar objects: pages/workspace/advanced/similar.md
   - Use Cases:
     - Overview: pages/usecases/usecase1.md
-  - Reference: pages/reference.md
+  - Reference:
+    - Workspace: pages/reference/workspace.md
 

@@ -64,7 +64,7 @@ type = "virtual"
 path = ".venv/docs"
 dependencies = [
     "mkdocs",
-    "mkdocstrings",
+    "mkdocstrings[python]"
     "mkdocs-material==9.4.7",
     "mkdocs-git-authors-plugin",
     "mkdocs-git-committers-plugin-2",

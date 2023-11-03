@@ -1,1 +1,44 @@
-Objects
+<!-- ::: openstix.objects.Artifact -->
+<!-- ::: openstix.objects.AttackPattern
+::: openstix.objects.AutonomousSystem
+::: openstix.objects.Bundle
+::: openstix.objects.Campaign
+::: openstix.objects.CourseOfAction
+::: openstix.objects.Directory
+::: openstix.objects.DomainName
+::: openstix.objects.EmailAddress
+::: openstix.objects.EmailMessage
+::: openstix.objects.File
+::: openstix.objects.GranularMarking
+::: openstix.objects.Grouping
+::: openstix.objects.IPv4Address
+::: openstix.objects.IPv6Address
+::: openstix.objects.Identity
+::: openstix.objects.Incident
+::: openstix.objects.Indicator
+::: openstix.objects.Infrastructure
+::: openstix.objects.IntrusionSet
+::: openstix.objects.LanguageContent
+::: openstix.objects.Location
+::: openstix.objects.MACAddress
+::: openstix.objects.Malware
+::: openstix.objects.MalwareAnalysis
+::: openstix.objects.Mutex
+::: openstix.objects.NetworkTraffic
+::: openstix.objects.Note
+::: openstix.objects.ObservedData
+::: openstix.objects.Opinion
+::: openstix.objects.Process
+::: openstix.objects.Relationship
+::: openstix.objects.Report
+::: openstix.objects.Sighting
+::: openstix.objects.Software
+::: openstix.objects.StatementMarking
+::: openstix.objects.TLPMarking
+::: openstix.objects.ThreatActor
+::: openstix.objects.Tool
+::: openstix.objects.URL
+::: openstix.objects.UserAccount
+::: openstix.objects.Vulnerability
+::: openstix.objects.WindowsRegistryKey
+::: openstix.objects.X509Certificate -->
