@@ -1,44 +1,71 @@
-<!-- ::: openstix.objects.Artifact -->
-<!-- ::: openstix.objects.AttackPattern
-::: openstix.objects.AutonomousSystem
-::: openstix.objects.Bundle
-::: openstix.objects.Campaign
-::: openstix.objects.CourseOfAction
-::: openstix.objects.Directory
-::: openstix.objects.DomainName
-::: openstix.objects.EmailAddress
-::: openstix.objects.EmailMessage
-::: openstix.objects.File
-::: openstix.objects.GranularMarking
-::: openstix.objects.Grouping
-::: openstix.objects.IPv4Address
-::: openstix.objects.IPv6Address
-::: openstix.objects.Identity
-::: openstix.objects.Incident
-::: openstix.objects.Indicator
-::: openstix.objects.Infrastructure
-::: openstix.objects.IntrusionSet
-::: openstix.objects.LanguageContent
-::: openstix.objects.Location
-::: openstix.objects.MACAddress
-::: openstix.objects.Malware
-::: openstix.objects.MalwareAnalysis
-::: openstix.objects.Mutex
-::: openstix.objects.NetworkTraffic
-::: openstix.objects.Note
-::: openstix.objects.ObservedData
-::: openstix.objects.Opinion
-::: openstix.objects.Process
-::: openstix.objects.Relationship
-::: openstix.objects.Report
-::: openstix.objects.Sighting
-::: openstix.objects.Software
-::: openstix.objects.StatementMarking
-::: openstix.objects.TLPMarking
-::: openstix.objects.ThreatActor
-::: openstix.objects.Tool
-::: openstix.objects.URL
-::: openstix.objects.UserAccount
-::: openstix.objects.Vulnerability
-::: openstix.objects.WindowsRegistryKey
-::: openstix.objects.X509Certificate -->
+# Objects
+
+## Standard Objects
+
+Objects from STIX2 library can be accessed under `openstix.objects`:
+```
+from opencti.objects import (
+    Artifact
+    AttackPattern
+    AutonomousSystem
+    Bundle
+    Campaign
+    CourseOfAction
+    Directory
+    DomainName
+    EmailAddress
+    EmailMessage
+    File
+    GranularMarking
+    Grouping
+    IPv4Address
+    IPv6Address
+    Identity
+    Incident
+    Indicator
+    Infrastructure
+    IntrusionSet
+    LanguageContent
+    Location
+    MACAddress
+    Malware
+    MalwareAnalysis
+    Mutex
+    NetworkTraffic
+    Note
+    ObservedData
+    Opinion
+    Process
+    Relationship
+    Report
+    Sighting
+    Software
+    StatementMarking
+    TLPMarking
+    ThreatActor
+    Tool
+    URL
+    UserAccount
+    Vulnerability
+    WindowsRegistryKey
+    X509Certificate
+    Bundle
+)   
+```
+
+**Reference:** https://docs.oasis-open.org/cti/stix/v2.1/stix-v2.1.html
+
+## Custom Objects
+
+### DNSRecord
+
+```
+from openstix.objects.custom import DNSRecord
+
+dns_record = DNSRecord(
+    record_class="IN",
+    record_type="A",
+    record_ttl="60",
+    value="8.8.8.8"
+)
+```

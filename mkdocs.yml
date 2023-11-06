@@ -56,18 +56,18 @@ plugins:
       handlers:
         python:
           paths:
-            - src
+            - src/
           options:
-            # Headings
+            load_external_modules: true
             show_root_heading: true
-            show_root_full_path: false
-            # Docstrings
+            show_root_full_path: true
             show_if_no_docstring: true
-            # Signatures/annotations
             show_signature_annotations: true
-            # Other
-            show_bases: false
-            show_source: false
+            show_bases: true
+            show_source: true
+            allow_inspection: true
+            preload_modules:
+            - stix2
 
 markdown_extensions: 
   - attr_list

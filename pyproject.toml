@@ -75,6 +75,10 @@ dependencies = [
 
 [tool.ruff]
 line-length = 120
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]

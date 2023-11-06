@@ -1,1 +1,5 @@
-Setup
+# Setup
+
+```
+pip install openstix
+```
