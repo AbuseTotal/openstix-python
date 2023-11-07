@@ -1,16 +1,16 @@
 from openstix._base import _load_submodules, _map_types
 
 
-SCOS_MAPPING = _map_types(_load_submodules("stix2.v21.observables", "objects"))
-SCOS_EXTENSIONS_MAPPING = _map_types(_load_submodules("stix2.v21.observables", "extensions"))
+SCOS_MAPPING = _map_types(_load_submodules("openstix.objects.scos", "objects"))
+SCOS_EXTENSIONS_MAPPING = _map_types(_load_submodules("openstix.objects.scos", "extensions"))
 
-SDOS_MAPPING = _map_types(_load_submodules("stix2.v21.sdo", "objects"))
-SDOS_EXTENSIONS_MAPPING = _map_types(_load_submodules("stix2.v21.sdo", "extensions"))
+SDOS_MAPPING = _map_types(_load_submodules("openstix.objects.sdos", "objects"))
+SDOS_EXTENSIONS_MAPPING = _map_types(_load_submodules("openstix.objects.sdos", "extensions"))
 
-SROS_MAPPING = _map_types(_load_submodules("stix2.v21.sro", "objects"))
-SROS_EXTENSIONS_MAPPING = _map_types(_load_submodules("stix2.v21.sro", "extensions"))
+SROS_MAPPING = _map_types(_load_submodules("openstix.objects.sros", "objects"))
+SROS_EXTENSIONS_MAPPING = _map_types(_load_submodules("openstix.objects.sros", "extensions"))
 
-SMOS_MAPPING = _map_types(_load_submodules("stix2.v21.common", "meta"))
+SMOS_MAPPING = _map_types(_load_submodules("openstix.objects.smos", "objects"))
 
 STIX_OBJECTS_MAPPING = {}
 STIX_OBJECTS_MAPPING.update(SCOS_MAPPING)

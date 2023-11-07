@@ -1,60 +1,94 @@
 import os
+from openstix import definitions, objects, extensions
 
-from openstix import definitions, objects, toolkit
+HEADER_TEMPLATE = "{}\n{}\n\n"
 
+AUTOMODULE_TEMPLATE = """
+.. automodule:: {module_name}.{submodule}
+    :members:
+    :undoc-members:
+    :show-inheritance:
+"""
 
-def generate_rst(submodule, module_name, path):
-    rst_filename = os.path.join(path, f"{submodule}.rst")
-    header = f"{submodule}\n{'='*len(submodule)}\n\n"
-    automodule_directive = (
-        f".. automodule:: {module_name}.{submodule}\n    :members:\n    :undoc-members:\n    :show-inheritance:"
-    )
-    autosummary_directive = "\n\n.. autosummary:: \n    :toctree: _autosummary\n    :nosignatures:\n"
+TOCTREE_TEMPLATE = """
+.. toctree::
+   :maxdepth: 2
+   :caption: {caption}
 
-    with open(rst_filename, "w") as file:
-        file.write(header + automodule_directive + autosummary_directive)
+   {entries}
+"""
 
-    return rst_filename
+class RSTGenerator:
+    def __init__(self, output_dir="_generated"):
+        self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
+    
+    @staticmethod
+    def write_to_file(filename, content):
+        with open(filename, "w") as file:
+            file.write(content)
 
+    @staticmethod
+    def create_header(submodule):
+        return HEADER_TEMPLATE.format(submodule, '=' * len(submodule))
 
-def generate_rst_for_module(module, output_dir):
-    if not hasattr(module, "__all__"):
-        return []
+    @staticmethod
+    def create_automodule_directive(module_name, submodule):
+        return AUTOMODULE_TEMPLATE.format(module_name=module_name, submodule=submodule)
 
-    module_name = module.__name__.replace("openstix.", "")
+    def generate_rst(self, submodule, module_name, path):
+        filename = os.path.join(path, f"{submodule}.rst")
+        content = (
+            self.create_header(submodule) +
+            self.create_automodule_directive(module_name, submodule)
+        )
+        self.write_to_file(filename, content)
+        return filename
 
-    path_list = [output_dir] + module_name.split(".")
-    path = os.path.join(*path_list)
-    os.makedirs(path, exist_ok=True)
+    def generate_rst_for_submodules(self, module):
+        if not hasattr(module, "__all__"):
+            return []
 
-    generated_files = []
-    for submodule in module.__all__:
-        rst_filename = generate_rst(submodule, module.__name__, path)
-        generated_files.append(rst_filename)
+        module_name = module.__name__.replace("openstix.", "")
+        path = os.path.join(self.output_dir, "library", module_name)
+        os.makedirs(path, exist_ok=True)
 
-    return generated_files
+        return [self.generate_rst(submodule, module.__name__, path) for submodule in module.__all__]
 
+    def create_toctree_entry(self, file):
+        return os.path.relpath(file, self.output_dir).replace(os.sep, '/')
 
-def generate_modules_rst(generated_files, output_dir):
-    modules_rst_filename = os.path.join(output_dir, "modules.rst")
-    toctree_entries = "\n   ".join(
-        f"{os.path.relpath(file, output_dir).replace(os.sep, '/')}" for file in generated_files
-    )
+    def generate_library_rst(self, generated_files):
+        # Initialize sections
+        sections = {'Objects': [], 'Extensions': [], 'Properties': []}
+        
+        # Populate sections
+        for file in generated_files:
+            if "objects" in file:
+                sections['Objects'].append(file)
+            elif "extensions" in file:
+                sections['Extensions'].append(file)
+            # Add more conditions as needed for 'Properties' or other sections
+        
+        # Write toctrees for sections
+        for section, files in sections.items():
+            if files:
+                toctree_entries = "\n   ".join(self.create_toctree_entry(file) for file in files)
+                toctree_content = TOCTREE_TEMPLATE.format(caption=section, entries=toctree_entries)
+                section_filename = os.path.join(self.output_dir, "library", f"{section.lower()}.rst")
+                self.write_to_file(section_filename, toctree_content)
 
-    with open(modules_rst_filename, "w") as file:
-        file.write(f"Modules\n=======\n\n" f".. toctree::\n   :maxdepth: 2\n\n   {toctree_entries}\n")
+    def run(self):
+        modules = [definitions, objects, extensions]
+        generated_files = []
+        
+        for module in modules:
+            rst_files = self.generate_rst_for_submodules(module)
+            generated_files.extend(rst_files)
 
-
-def main():
-    output_dir = "_generated"
-    os.makedirs(output_dir, exist_ok=True)
-
-    generated_files = []
-    for module in [definitions, objects, toolkit]:
-        generated_files.extend(generate_rst_for_module(module, output_dir))
-
-    generate_modules_rst(generated_files, output_dir)
-
+        # Generate the library RST that includes the toctrees
+        self.generate_library_rst(generated_files)
 
 if __name__ == "__main__":
-    main()
+    rst_generator = RSTGenerator()
+    rst_generator.run()

@@ -1,1 +1,1 @@
-from openstix import definitions, properties, extensions, mappings, datasets, toolkit, objects, vocab, utils
+from openstix import definitions, properties, mappings, datasets, toolkit, objects, vocab, utils

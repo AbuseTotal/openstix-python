@@ -63,6 +63,13 @@ path = ".venv/default"
 release = "tbd"
 run = "tbd"
 
+[tool.hatch.envs.docs]
+type = "virtual"
+path = ".venv/docs"
+dependencies = [
+    "sphinx_rtd_theme"
+]
+
 [tool.ruff]
 line-length = 120
 

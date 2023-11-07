@@ -7,11 +7,10 @@ Welcome to OpenSTIX's documentation!
 ====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-   .. _generated/modules.rst
-   example/modules.rst
+   reference/index.rst
 
 Indices and tables
 ==================
