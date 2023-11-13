@@ -32,6 +32,28 @@ from openstix.toolkit.workspace import Workspace
 workspace = Workspace(namespace="<your-namespace-uuid>")
 ```
 
+#### Parse and load stix data into workspace
+```python
+data = """
+{
+    "type": "bundle",
+    "id": "bundle--0ef10afc-6a6b-4df7-bc4b-099977bfcba8",
+    "objects": [
+        {
+            "type": "domain-name",
+            "spec_version": "2.1",
+            "id": "domain-name--9076dffc-9b97-55f6-a720-bc115b25fe31",
+            "value": "openstix.dev"
+        }
+    ]
+}
+"""
+
+# Parse STIX data and load automatically the objects in workspace
+workspace.parse(data)
+```
+
+
 #### Create SCO within workspace
 ```python
 from openstix.objects import DomainName

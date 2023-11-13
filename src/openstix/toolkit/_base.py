@@ -1,7 +1,10 @@
 from stix2 import MemoryStore, Environment
 from openstix.toolkit.factory import DeterministicObjectFactory
 from stix2.environment import ObjectFactory
+from openstix.objects import Bundle
+from openstix import utils
 import uuid
+
 
 __all__ = [
     "Workspace",
@@ -109,5 +112,19 @@ class Workspace(Environment):
         except KeyError:
             raise ValueError(f"No object found with ID: {object_id}")
 
+    def parse(self, data, allow_custom=False):
+        """
+        Convert a string, dict or file-like object into a STIX object(s) and loads the object(s) into the Workspace's.
 
+        Args:
+            data (str, dict, file-like object): The STIX 2 content to be parsed.
+            allow_custom (bool): Whether to allow custom properties as well unknown
+                custom objects. Note that unknown custom objects cannot be parsed
+                into STIX objects, and will be returned as is. Default: False.
+        """
+        parsed_data = utils.common.parse(data, allow_custom)
+        if isinstance(parsed_data, Bundle):
+            self.add(parsed_data.objects)
+        else:
+            self.add(parsed_data)
 
