@@ -1,7 +1,7 @@
 from stix2 import MemoryStore, Environment
 from openstix.toolkit.factory import DeterministicObjectFactory
-from typing import Any, Dict, List, Optional, Generator, Tuple, Union
 from stix2.environment import ObjectFactory
+import uuid
 
 __all__ = [
     "Workspace",
@@ -24,7 +24,7 @@ class Workspace(Environment):
             namespace (str): The namespace URI for generating deterministic STIX object IDs.
         """
         store = MemoryStore()
-        factory = DeterministicObjectFactory(namespace=namespace)
+        factory = DeterministicObjectFactory(namespace=uuid.UUID(namespace))
         super().__init__(store=store, factory=factory)
 
     def stats(self, query):
