@@ -84,7 +84,16 @@ from openstix.toolkit.filters.presets import MALWARE_FILTER
 malwares = self.workspace.query(MALWARE_FILTER)
 ```
 
+#### Download STIX datasets
+
+```bash
+$ openstix datasets download --all
+```
+
 #### Get MITRE TTP using MITRE Datasets
+
+**Note:** make sure you have downloaded the dataset using openstix cli
+
 ```python
 from openstix.datasets import MITREDataset
 
@@ -96,6 +105,9 @@ attack_pattern = dataset.attack_pattern("T1090")
 ```
 
 #### Get country and regions objects using GeoLocation Datasets
+
+**Note:** make sure you have downloaded the dataset using openstix cli
+
 ```python
 from openstix.datasets import GeoLocationsDataset
 

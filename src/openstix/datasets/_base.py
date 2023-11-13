@@ -1,16 +1,16 @@
-from pathlib import Path
-from abc import ABC
-import uuid
 import os
+from abc import ABC
+from pathlib import Path
 
 import requests
 
-from openstix.toolkit.stores import MemoryStore as MemoryStore
 from openstix.toolkit import Workspace as Workspace
+from openstix.toolkit.stores import MemoryStore as MemoryStore
 from openstix.utils.common import parse
 
-XITS_NAMESPACE = uuid.UUID("52117afa-30ca-4b46-bb7b-0531fa2f8aec")
-FOLDER_PATH = "~/.xits2"
+OPENSTIX_NAMESPACE = "52117afa-30ca-4b46-bb7b-0531fa2f8aec"
+FOLDER_PATH = "~/.openstix"
+
 
 class Dataset(ABC):
     source = None
@@ -18,7 +18,7 @@ class Dataset(ABC):
     folder = Path(os.path.expanduser(FOLDER_PATH))
 
     def __init__(self):
-        self.workspace = Workspace(namespace=XITS_NAMESPACE)
+        self.workspace = Workspace(namespace=OPENSTIX_NAMESPACE)
 
     def download(self):
         if self.source is None or self.files is None:
@@ -36,7 +36,7 @@ class Dataset(ABC):
 
             print(f"Collecting {filepath} ...")
             response = requests.get(url)
-            with open(filepath, 'w') as f:
+            with open(filepath, "w") as f:
                 f.write(response.text)
 
     def load(self):
@@ -46,7 +46,7 @@ class Dataset(ABC):
         source_folder = self.folder / self.source
         if not source_folder.exists():
             return
-        
+
         for filename in os.listdir(source_folder):
             with open(source_folder / filename) as fp:
                 data = fp.read()

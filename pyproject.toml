@@ -43,7 +43,7 @@ Tracker = "https://github.com/abusetotal/openstix/issues"
 Source = "https://github.com/abusetotal/openstix"
 
 [project.scripts]
-openstix-datasets = "openstix.datasets.__main__:main"
+openstix = "openstix.__main__:cli"
 
 [tool.hatch.version.raw-options]
 version_scheme = "python-simplified-semver"
