@@ -63,7 +63,7 @@ class Workspace(Environment):
         self.add(obj)
         return obj
 
-    def query(self, query, unique=True):
+    def query(self, query=[], unique=True):
         """
         Executes a query against the memory store to retrieve STIX objects.
 
