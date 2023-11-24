@@ -1,11 +1,10 @@
-from openstix._base import _load_submodules
+from openstix.objects.scos import *
+from openstix.objects.scos.custom import *
 
-submodules = {}
-submodules.update(_load_submodules("stix2.v21.observables", "objects"))
-submodules.update(_load_submodules("stix2.v21.sdo", "objects"))
-submodules.update(_load_submodules("stix2.v21.sro", "objects"))
-submodules.update(_load_submodules("stix2.v21.common", "meta"))
+from openstix.objects.sdos import *
+from openstix.objects.sdos.custom import *
 
-__all__ = list(submodules.keys())
+from openstix.objects.sros import *
+from openstix.objects.sros.custom import *
 
-globals().update(submodules)
+from openstix.objects.smos import *
