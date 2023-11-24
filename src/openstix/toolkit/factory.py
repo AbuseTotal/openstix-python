@@ -1,13 +1,12 @@
 import uuid
 
+from stix2.base import _DomainObject, _make_json_serializable, _RelationshipObject
 from stix2.canonicalization.Canonicalize import canonicalize
-from stix2.base import _make_json_serializable
 from stix2.environment import ObjectFactory
-
 
 __all__ = [
     "DeterministicObjectFactory",
-    "ObjectFactory"
+    "ObjectFactory",
 ]
 
 ID_CONTRIBUTING_PROPERTIES = {
@@ -21,7 +20,7 @@ ID_CONTRIBUTING_PROPERTIES = {
     "sighting": [
         "sighting_of_ref",
         "observed_data_refs",
-        "where_sighted_refs"
+        "where_sighted_refs",
     ],
     "location": [
         "name",
@@ -30,18 +29,20 @@ ID_CONTRIBUTING_PROPERTIES = {
         "city",
         "latitude",
         "longitude",
-    ]
+    ],
 }
 
-class DeterministicObjectFactory(ObjectFactory):
 
+class DeterministicObjectFactory(ObjectFactory):
     def __init__(self, *args, namespace, **kwargs):
         self.namespace = namespace
         super().__init__(*args, **kwargs)
 
     def create(self, cls, **kwargs):
-        _id = self._generate_id(cls, **kwargs)
-        return super().create(cls, id=_id, **kwargs)
+        if issubclass(cls, _DomainObject) or issubclass(cls, _RelationshipObject):
+            kwargs["id"] = self._generate_id(cls, **kwargs)
+
+        return super().create(cls, **kwargs)
 
     def _generate_id(self, cls, **kwargs):
         id_ = None
@@ -53,7 +54,6 @@ class DeterministicObjectFactory(ObjectFactory):
             contributing_properties = ID_CONTRIBUTING_PROPERTIES.get(cls._type, [])
 
         for key in contributing_properties:
-
             if key in kwargs and kwargs[key] is not None:
                 serializable_value = _make_json_serializable(kwargs[key])
                 json_serializable_object[key] = serializable_value
