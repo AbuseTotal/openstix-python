@@ -12,8 +12,9 @@
       "version": "latest"
     }
   },
-  "postCreateCommand": "/usr/bin/bash -i -c 'sudo apt-get update && hatch run true'",
-  "postAttachCommand": "/usr/bin/bash -i -c 'source /openstix/.venv/default/bin/activate'",
+  "containerEnv": {
+    "HATCH_ENV_TYPE_VIRTUAL_PATH": ".venv/default/"
+  },
   "customizations": {
     "vscode": {
       "extensions": [

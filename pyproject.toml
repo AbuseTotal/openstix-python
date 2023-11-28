@@ -57,7 +57,6 @@ packages = ["src/openstix"]
 
 [tool.hatch.envs.default]
 type = "virtual"
-path = ".venv/default"
 
 [tool.hatch.envs.default.scripts]
 release = "tbd"
