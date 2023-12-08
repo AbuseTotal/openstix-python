@@ -1,16 +1,12 @@
 {
   "name": "openstix",
   "remoteUser": "vscode",
-  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04",
-  "workspaceFolder": "/openstix",
-  "workspaceMount": "source=${localWorkspaceFolder}/,target=/openstix/,type=bind,consistency=cached",
+  "image": "abusetotal/devcontainer:latest",
+  "workspaceFolder": "/openstix-python",
+  "workspaceMount": "source=${localWorkspaceFolder}/,target=/openstix-python/,type=bind,consistency=cached",
   "features": {
-    "ghcr.io/devcontainers/features/git": {
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers-contrib/features/hatch:2": {
-      "version": "latest"
-    }
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers-contrib/features/hatch:2": {}
   },
   "containerEnv": {
     "HATCH_ENV_TYPE_VIRTUAL_PATH": ".venv/default/"
@@ -25,12 +21,12 @@
         "files.eol": "\n",
         "editor.defaultFormatter": "charliermarsh.ruff",
         "ruff.lint.args": [
-          "--config=/openstix/pyproject.toml"
+          "--config=/openstix-python/pyproject.toml"
         ],
         "ruff.format.args": [
-          "--config=/openstix/pyproject.toml"
+          "--config=/openstix-python/pyproject.toml"
         ],
-        "python.defaultInterpreterPath": "/openstix/.venv/default/bin/python",
+        "python.defaultInterpreterPath": "/openstix-python/.venv/default/bin/python",
         "python.analysis.autoImportCompletions": true,
         "[python]": {
           "editor.formatOnSave": true,
