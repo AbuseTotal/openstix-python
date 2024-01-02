@@ -1,9 +1,8 @@
-from stix2 import MemoryStore, Environment
-from openstix.toolkit.factory import DeterministicObjectFactory
+from stix2 import Environment, MemoryStore
 from stix2.environment import ObjectFactory
-from openstix.objects import Bundle
+
 from openstix import utils
-import uuid
+from openstix.objects import Bundle
 
 
 __all__ = [
@@ -12,6 +11,7 @@ __all__ = [
     "Environment",
 ]
 
+
 class Workspace(Environment):
     """
     Extends the `stix2.Environment` class to provide a customized environment for handling
@@ -19,18 +19,13 @@ class Workspace(Environment):
     removing STIX objects, including handling multiple versions of objects.
     """
 
-    def __init__(self, namespace):
+    def __init__(self, store=MemoryStore()):
         """
-        Initializes the Workspace with a MemoryStore and a DeterministicObjectFactory.
-
-        Args:
-            namespace (str): The namespace URI for generating deterministic STIX object IDs.
+        Initializes the Workspace with a MemoryStore.
         """
-        store = MemoryStore()
-        factory = DeterministicObjectFactory(namespace=uuid.UUID(namespace))
-        super().__init__(store=store, factory=factory)
+        super().__init__(store=store)
 
-    def stats(self, query):
+    def stats(self, query=[]):
         """
         Generates statistics on the STIX objects within the store.
 
@@ -63,30 +58,29 @@ class Workspace(Environment):
         self.add(obj)
         return obj
 
-    def query(self, query=[], unique=True):
+    def query(self, query=[], last_version_only=True):
         """
-        Executes a query against the memory store to retrieve STIX objects.
+        Executes a query against the store to retrieve STIX objects.
 
         Args:
             query (Optional[List], optional): A list of filters representing the query. Defaults to None.
-            unique (bool, optional): When True, only the most recent version of each unique object
-                                     is returned. Defaults to True.
+            last_version_only (bool, optional): When True, only the most recent version of each object is
+                                                returned. Defaults to True.
 
         Returns:
-            List[stix2.base._STIXBase]: A list of STIX objects that match the query criteria. When `unique`
-                                        is True, the list will contain only the most recent version of each
-                                        unique object.
+            List[stix2.base._STIXBase]: A list of STIX objects that match the query criteria. When `last_version_only`
+                                        is True, the list will contain only the most recent version of each object.
         """
         all_objects = super().query(query)
-        if not unique or not all_objects:
+        if not last_version_only or not all_objects:
             return all_objects
 
-        def get_most_recent_unique_objects():
+        def get_last_version_objects():
             """
-            Yields the most recent versions of unique objects, sorted in reverse order of addition.
+            Yields the last version objects, sorted in reverse order of addition.
 
             Yields:
-                stix2.base._STIXBase: Each unique STIX object in the memory store.
+                stix2.base._STIXBase: Each STIX object in the store.
             """
             seen = set()
             for obj in reversed(all_objects):
@@ -94,11 +88,11 @@ class Workspace(Environment):
                     seen.add(obj.id)
                     yield obj
 
-        return list(get_most_recent_unique_objects())
+        return list(get_last_version_objects())
 
     def remove(self, object_id):
         """
-        Removes an object, along with all its versions, from the memory store.
+        Removes an object, along with all its versions, from the store.
 
         Args:
             object_id (str): The ID of the STIX object to be removed.
@@ -127,4 +121,3 @@ class Workspace(Environment):
             self.add(parsed_data.objects)
         else:
             self.add(parsed_data)
-

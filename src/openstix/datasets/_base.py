@@ -5,11 +5,12 @@ from pathlib import Path
 import requests
 
 from openstix.toolkit import Workspace as Workspace
-from openstix.toolkit.stores import MemoryStore as MemoryStore
+from openstix.toolkit.filters import Filter
 from openstix.utils.common import parse
 
-OPENSTIX_NAMESPACE = "52117afa-30ca-4b46-bb7b-0531fa2f8aec"
+
 FOLDER_PATH = "~/.openstix"
+NOT_REVOKED_FILTER = Filter("revoked", "=", False)
 
 
 class Dataset(ABC):
@@ -18,7 +19,7 @@ class Dataset(ABC):
     folder = Path(os.path.expanduser(FOLDER_PATH))
 
     def __init__(self):
-        self.workspace = Workspace(namespace=OPENSTIX_NAMESPACE)
+        self.workspace = Workspace()
 
     def download(self):
         if self.source is None or self.files is None:
@@ -55,12 +56,20 @@ class Dataset(ABC):
     def _parse(self, data):
         bundle = parse(data, allow_custom=True)
         self.workspace.add(bundle.objects)
+        self._check_not_supported_objects()
 
-    def _query(self, filters=[]):
+    def _check_not_supported_objects(self):
+        for obj in self.workspace.query():
+            if isinstance(obj, dict):
+                print(f"Unsupported object type: {obj.type}")
+
+    def _query(self, filters=[], revoked=False):
+        if not revoked:
+            filters.append(NOT_REVOKED_FILTER)
         return self.workspace.query(filters)
 
-    def _query_one(self, filters=[]):
-        objects = self._query(filters)
+    def _query_one(self, filters=[], revoked=False):
+        objects = self._query(filters, revoked=revoked)
         if objects:
             return objects[0]
         return None
