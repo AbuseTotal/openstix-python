@@ -4,7 +4,6 @@ from stix2.environment import ObjectFactory
 from openstix import utils
 from openstix.objects import Bundle
 
-
 __all__ = [
     "Workspace",
     "ObjectFactory",
@@ -19,10 +18,12 @@ class Workspace(Environment):
     removing STIX objects, including handling multiple versions of objects.
     """
 
-    def __init__(self, store=MemoryStore()):
+    def __init__(self, store=None):
         """
         Initializes the Workspace with a MemoryStore.
         """
+        if store is None:
+            store = MemoryStore()
         super().__init__(store=store)
 
     def stats(self, query=[]):
